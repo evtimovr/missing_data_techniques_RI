@@ -4,6 +4,9 @@ require(Metrics)
 require(mice)
 require(scoringTools)
 
+source("./al_4_var_functions.R")
+
+
 simulation_gal <- function(mu_g, mu_b, sigma_g, sigma_b, n_train, n_test, b, alpha, j_max, i) {
   # Generate initial dataset D_star
   set.seed(423)
