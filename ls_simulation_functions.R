@@ -1,3 +1,51 @@
+generate <- function(mu_g, mu_b, sigma_g, sigma_b, b, n) {
+  
+  # Function to draw weighted sum of samples from two Gaussian distributions
+  draw_weighted_sum <- function(mu1, cov1, weight, n_samples=1) {
+    # Draw samples from the first normal distribution
+    samples1 <- MASS::mvrnorm(n_samples, mu1, cov1)
+    
+    # Draw samples from the second normal distribution
+    mu2 <- mu1 + 5
+    samples2 <- MASS::mvrnorm(n_samples, mu2, cov1)
+    
+    # Calculate the weighted sum of the samples
+    weighted_sum_samples <- weight * samples1 + (1 - weight) * samples2
+    
+    return(weighted_sum_samples)
+  }
+  
+  # Calculate number of samples for each Gaussian distribution
+  n_g <- round(n * (1 - b))
+  n_b <- n - n_g
+  
+  # Generate samples for Gaussian distributions
+  x_g <- as.data.frame(draw_weighted_sum(mu_g, sigma_g, 0.7, n_g))
+  x_g_3 <- rnorm(n_g, mean = 0, sd = 1)
+  x_g_4 <- rnorm(n_g, mean = 0, sd = 1)
+  
+  x_b <- as.data.frame(draw_weighted_sum(mu_b, sigma_b, 0.7, n_b))
+  x_b_3 <- rnorm(n_b, mean = 0, sd = 1)
+  x_b_4 <- rnorm(n_b, mean = 0, sd = 1)
+  
+  # Set class labels
+  y_g <- rep(0, n_g)
+  y_b <- rep(1, n_b)
+  
+  # Combine features and class labels
+  
+  final_g <- cbind(x_g, V4 = x_g_3, Y = y_g)
+  final_b <- cbind(x_b, V4 = x_b_3, Y = y_b)
+  
+  final_g <- cbind(x_g, V4 = x_g_3, V5 = x_g_4, Y = y_g)
+  final_b <- cbind(x_b, V4 = x_b_3, V5 = x_b_4, Y = y_b)
+  
+  # Combine data from both Gaussian distributions
+  data <- rbind(final_g, final_b)
+  
+  return(data)
+}
+
 galimard_option_2 <- function (data, varMNAR, m, test_data){
   
   require(miceMNAR)
@@ -58,12 +106,10 @@ galimard_option_2 <- function (data, varMNAR, m, test_data){
   
 }
 
-
 # PPMI - adjusting to match the structure of the Lessmann acceptance loop
 
 PPMA_MI_sim <- function(data, varMNAR, m, test_data, phi) {
   
-  setwd("/Users/radoslavevtimov/Desktop/Master Thesis/PPMA-master")
   source("./binaryPPMA_functions.R")
    
   #Getting imputed values from paper function
@@ -133,22 +179,47 @@ PPMA_MI_sim <- function(data, varMNAR, m, test_data, phi) {
     )
 }
 
-
 augment <- function(xf, xnf, yf, test_data){
   model <- augmentation(xf, xnf, yf)
   pred_aug <- predict(model,newdata= test_data[, -ncol(test_data)], type = "response")
   return (auc(test_data$Y,pred_aug))
 }
 
-augment(D_a[, -ncol(D_a)], D_r[, -ncol(D_r)],D_a$Y, D)
-model <- augmentation(D_a[, -ncol(D_a)], D_r[, -ncol(D_r)], as.factor(D_a$Y))
+# Function to create missing values
+missingness_mnar <- function(data, missing_percentage_0, missing_percentage_1) {
+  data$Y_hat <- data$Y
+  
+  sampled_indices_0 <- sample(which(data$Y == 0), size = floor(length(which(data$Y == 0)) * missing_percentage_0))
+  data$Y_hat[sampled_indices_0] <- NA
+  
+  sampled_indices_1 <- sample(which(data$Y == 1), size = floor(length(which(data$Y == 1)) * missing_percentage_1))
+  data$Y_hat[sampled_indices_1] <- NA
+  
+  data$r <- ifelse(is.na(data$Y_hat), 1, 0)
+  
+  return(data)
+}
 
-df <- generate_data(n = 100, d = 2)
-xf <- df[, -ncol(df)]
-yf <- df$y
-# We simulate data from not financed clients (MCAR mechanism)
-xnf <- generate_data(n = 100, d = 2)[, -ncol(df)]
+# Data Generation from a single Gaussian distribution
+generate_single <- function(mu_g, mu_b, sigma_g, sigma_b, b, n) {
+  n_b <- as.integer(b * n)
+  n_g <- as.integer(n - b * n)
+  
+  x_g <- matrix(rmvnorm(n_g, mean = mu_g, sigma = sigma_g), ncol = length(mu_g), byrow = TRUE)
+  x_b <- matrix(rmvnorm(n_b, mean = mu_b, sigma = sigma_b), ncol = length(mu_b), byrow = TRUE)
+  
+  y_g <- 0
+  y_b <- 1
+  
+  final_g <- as.data.frame(x_g)
+  colnames(final_g) <- paste0("V", 1:length(mu_g))
+  final_g$Y <- y_g
+  
+  final_b <- as.data.frame(x_b)
+  colnames(final_b) <- paste0("V", 1:length(mu_b))
+  final_b$Y <- y_b
+  
+  data <- rbind(final_g, final_b)
+  return(data)
+}
 
-test_data -> 
-
-augment()

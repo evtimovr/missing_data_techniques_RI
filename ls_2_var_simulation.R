@@ -1,3 +1,7 @@
+require(pROC)
+require(Metrics)
+require(PRROC)
+
 galimard_option_2 <- function (data, varMNAR, m, test_data){
   
   require(miceMNAR)
@@ -43,18 +47,12 @@ galimard_option_2 <- function (data, varMNAR, m, test_data){
   
   # Compute ROC curve
   #roc_curve <- roc(response = test_data$Y, predictor = pred$fit)
+  
   # Calculate AUC
   #auc_value <- auc(roc_curve)
   auc_value = auc(test_data[, c("Y")], pred$fit)
-  # Print AUC
-  auc_pr = pr.curve(scores.class0 = test_data[, c("Y")] , weights.class0 = pred$fit)$auc.integral
-  #print(paste("AUC_ROC from Gal:", auc_value))
-  #print(paste("AUC_PR from Gal:", auc_pr))
   
-  return ((auc_value) 
-          #pred$fit
-          #auc_pr
-  )
+  return ((auc_value))
   
 }
 
@@ -62,7 +60,6 @@ galimard_option_2 <- function (data, varMNAR, m, test_data){
 
 PPMA_MI_sim <- function(data, varMNAR, m, test_data, phi) {
   
-  setwd("/Users/radoslavevtimov/Desktop/Master Thesis/PPMA-master")
   source("./binaryPPMA_functions.R")
   
   #Getting imputed values from paper function
@@ -110,9 +107,7 @@ PPMA_MI_sim <- function(data, varMNAR, m, test_data, phi) {
   
   #Creating predictions pooled based on Rubin's rules
   pred = as.data.frame(pred)
-  require(pROC)
-  require(Metrics)
-  require(PRROC)
+
   
   # Compute ROC curve
   #roc_curve <- roc(response = test_data[, c("Y")], predictor = pred$fit)
@@ -123,15 +118,9 @@ PPMA_MI_sim <- function(data, varMNAR, m, test_data, phi) {
   #print(auc_value)
   auc_value = auc(test_data[, c("Y")], pred$fit)
   print(paste("AUC_ROC from PPMA:", auc_value))
-  auc_pr = pr.curve(scores.class0 = test_data[, c("Y")] , weights.class0 = pred$fit)$auc.integral
-  #print(paste("AUC_PR from PPMA:", auc_pr))
   
-  return (auc_value 
-          #pred$fit
-          #auc_pr
-  )
+  return (auc_value)
 }
-
 
 augment <- function(xf, xnf, yf, test_data){
   model <- augmentation(xf, xnf, yf)

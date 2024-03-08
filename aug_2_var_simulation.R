@@ -1,10 +1,11 @@
 require(MASS)
 require(mvtnorm)
+require(Metrics)
+require(mice)
+require(scoringTools)
 
 simulation_gal <- function(mu_g, mu_b, sigma_g, sigma_b, n_train, n_test, b, alpha, j_max, i) {
   # Generate initial dataset D_star
-  require(Metrics)
-  require(scoringTools)
   set.seed(423)
   D_star <- generate(mu_g, mu_b, sigma_g, sigma_b, b, n_train)
   
@@ -106,6 +107,7 @@ miss_b = c(0.9)
 phi = c(0.5)
 j = c (300)
 alpha = c (0.1,0.2,0.3)
+b<- 0.3
 
 
 # Create a list of variables
