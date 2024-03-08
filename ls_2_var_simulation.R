@@ -58,7 +58,6 @@ galimard_option_2 <- function (data, varMNAR, m, test_data){
   
 }
 
-
 # PPMI - adjusting to match the structure of the Lessmann acceptance loop
 
 PPMA_MI_sim <- function(data, varMNAR, m, test_data, phi) {
@@ -139,19 +138,6 @@ augment <- function(xf, xnf, yf, test_data){
   pred_aug <- predict(model,newdata= test_data[, -ncol(test_data)], type = "response")
   return (auc(test_data$Y,pred_aug))
 }
-
-augment(D_a[, -ncol(D_a)], D_r[, -ncol(D_r)],D_a$Y, D)
-model <- augmentation(D_a[, -ncol(D_a)], D_r[, -ncol(D_r)], as.factor(D_a$Y))
-
-df <- generate_data(n = 100, d = 2)
-xf <- df[, -ncol(df)]
-yf <- df$y
-# We simulate data from not financed clients (MCAR mechanism)
-xnf <- generate_data(n = 100, d = 2)[, -ncol(df)]
-
-test_data -> 
-  
-  augment()
 
 generate <- function(mu_g, mu_b, sigma_g, sigma_b, b, n) {
   
