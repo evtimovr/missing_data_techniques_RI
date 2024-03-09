@@ -81,8 +81,8 @@ Does a repository contain a table/plot of main results and a script to reproduce
 
 ```bash
 ├── README.md
-├── requirements.txt                                -- required libraries
-├── data                                            -- stores csv file 
+├── output_data                                     -- stores output csv file
+├── params                                          -- stores output csv file  
 ├── plots                                           -- stores image files
 └── src
     ├── prepare_source_data.ipynb                   -- preprocesses data
