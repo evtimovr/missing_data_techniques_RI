@@ -95,7 +95,6 @@ galimard_option_2 <- function (data, varMNAR, m, test_data){
   #auc_value <- auc(roc_curve)
   auc_value = auc(test_data[, c("Y")], pred$fit)
   # Print AUC
-  auc_pr = pr.curve(scores.class0 = test_data[, c("Y")] , weights.class0 = pred$fit)$auc.integral
   #print(paste("AUC_ROC from Gal:", auc_value))
   #print(paste("AUC_PR from Gal:", auc_pr))
   
@@ -170,7 +169,6 @@ PPMA_MI_sim <- function(data, varMNAR, m, test_data, phi) {
   #print(auc_value)
   auc_value = auc(test_data[, c("Y")], pred$fit)
   print(paste("AUC_ROC from PPMA:", auc_value))
-  auc_pr = pr.curve(scores.class0 = test_data[, c("Y")] , weights.class0 = pred$fit)$auc.integral
   #print(paste("AUC_PR from PPMA:", auc_pr))
   
   return (auc_value 
