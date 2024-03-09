@@ -5,7 +5,8 @@ require(Metrics)
 require(scoringTools)
 require(mice)
 
-source("./al_5_var_functions.R")
+
+source("./src/al_5_var_functions.R")
 
 sim_df = data.frame(combination = numeric(), 
                     iteration = numeric(),
@@ -17,7 +18,7 @@ sim_df = data.frame(combination = numeric(),
 df_results <- list()
 
 #Sourcing the combinations
-combinations <- read.csv("./combinations_2.csv")
+combinations <- read.csv("./params/combinations_2.csv")
 
 for (i in 1:nrow(combinations)) {
   # Extract current combination

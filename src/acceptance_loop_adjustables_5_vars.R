@@ -4,7 +4,7 @@ require(mvtnorm)
 require(Metrics)
 require(scoringTools)
 
-source("./al_5_var_functions.R")
+source("./src/al_5_var_functions.R")
 
 #Latest used data
 cov_g = 0.2

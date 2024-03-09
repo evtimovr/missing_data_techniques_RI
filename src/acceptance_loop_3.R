@@ -1,11 +1,11 @@
+
 require(MASS)
 require(mvtnorm)
 require(Metrics)
-require(mice)
 require(scoringTools)
+require(mice)
 
-source("./al_4_var_functions.R")
-combinations <- read.csv("./combinations_4.csv")
+source("./src/al_5_var_functions.R")
 
 sim_df = data.frame(combination = numeric(), 
                     iteration = numeric(),
@@ -15,14 +15,19 @@ sim_df = data.frame(combination = numeric(),
                     auc_ppma = numeric(), 
                     auc_aug = numeric())
 df_results <- list()
+
+#Sourcing the combinations
+combinations <- read.csv("./params/combinations_3.csv")
+
 for (i in 1:nrow(combinations)) {
   # Extract current combination
   current_combination <- combinations[i, ]
   
   mu_g <- as.numeric(strsplit(current_combination$mu_g, ",")[[1]]) #c(1, 0.5, 0.2)
   mu_b <- as.numeric(strsplit(current_combination$mu_b, ",")[[1]]) #c(2, 1, 1)
-  sigma_g <- matrix(as.numeric(strsplit(current_combination$sigma_g_list, ",")[[1]]), nrow = 2)
-  sigma_b <- matrix(as.numeric(strsplit(current_combination$sigma_b_list, ",")[[1]]), nrow = 2)
+  #sigma_b <- matrix(current_combination$sigma_b_list[[1]], nrow = 3)
+  sigma_g <- matrix(as.numeric(strsplit(current_combination$sigma_g_list, ",")[[1]]), nrow = 3)
+  sigma_b <- matrix(as.numeric(strsplit(current_combination$sigma_b_list, ",")[[1]]), nrow = 3)
   b <- current_combination$b
   j <- current_combination$j
   n_train <- current_combination$n_train
