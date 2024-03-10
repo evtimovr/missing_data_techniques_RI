@@ -10,7 +10,7 @@
 
 [Insert here a figure explaining your approach or main results]
 
-![results](/result.png)
+![results](/Process_flow.jpg)
 
 ## Table of Content
 
@@ -19,9 +19,6 @@
     - [Dependencies](#Dependencies)
     - [Setup](#Setup)
 - [Reproducing results](#Reproducing-results)
-    - [Training code](#Training-code)
-    - [Evaluation code](#Evaluation-code)
-    - [Pretrained models](#Pretrained-models)
 - [Results](#Results)
 - [Project structure](-Project-structure)
 
@@ -29,8 +26,7 @@
 
 **Keywords**: Reject Inference, Missing Data, Credit Risk, MNAR, Acceptance loop (give at least 5 keywords / phrases).
 
-**Full text**: [include a link that points to the full text of your thesis]
-*Remark*: a thesis is about research. We believe in the [open science](https://en.wikipedia.org/wiki/Open_science) paradigm. Research results should be available to the public. Therefore, we expect dissertations to be shared publicly. Preferably, you publish your thesis via the [edoc-server of the Humboldt-Universität zu Berlin](https://edoc-info.hu-berlin.de/de/publizieren/andere). However, other sharing options, which ensure permanent availability, are also possible. <br> Exceptions from the default to share the full text of a thesis require the approval of the thesis supervisor.  
+**Full text**: Link will be included shortly.  
 
 ## Working with the repo
 
@@ -81,7 +77,6 @@ Does a repository contain a table/plot of main results and a script to reproduce
 
 ```bash
 ├── README.md
-├── output_data                                     -- stores output csv file
 ├── params                                          -- stores output csv file  
 ├── plots                                           -- stores image files
 └── src
