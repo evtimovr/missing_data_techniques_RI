@@ -1,6 +1,6 @@
 # Missing Data techniques for Reject Inference
 
-**Type:** Master's Thesis
+**Type:** Master Thesis
 
 **Author:** Radoslav Evtimov
 
