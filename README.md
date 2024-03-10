@@ -52,6 +52,8 @@ To recreate results, there are two options:
   Run file acceptance_loop_2.R to get the results corresponding to combination 2
   Run file acceptance_loop_3.R to get the results corresponding to combination 3
 
+- Run the scripts in acceptance_loop_adjustables_4_vars.R and acceptance_loop_adjustables_5_vars.R for potentially different sets of combinations of parameters.  
+
 All dependecies will be automatically flagged - if any packages are missing from the environment, the console will return this as dependency. If they are available, they will be added to the environment.
 
 Output: 
