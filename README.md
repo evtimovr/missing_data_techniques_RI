@@ -60,12 +60,6 @@ All dependecies will be automatically flagged - if any packages are missing from
 Output: 
 All files with results from the different combinations will be automatically stored in the working directory. 
 
-Here are some examples:
-- [Paperswithcode](https://github.com/paperswithcode/releasing-research-code)
-- [ML Reproducibility Checklist](https://ai.facebook.com/blog/how-the-ai-community-can-get-serious-about-reproducibility/)
-- [Simple & clear Example from Paperswithcode](https://github.com/paperswithcode/releasing-research-code/blob/master/templates/README.md) (!)
-- [Example TensorFlow](https://github.com/NVlabs/selfsupervised-denoising)
-
 
 ## Results
 
