@@ -1,4 +1,4 @@
-# Title
+# Missing Data techniques for Reject Inference
 
 **Type:** Master's Thesis
 
@@ -26,7 +26,7 @@ Idea behind the main output of the thesis:
 
 **Keywords**: Reject Inference, Missing Data, Credit Risk, MNAR, Acceptance loop (give at least 5 keywords / phrases).
 
-**Full text**: Link will be included shortly.  
+**Full text**: Full text can be found in different formats in the "paper" folder.   
 
 ## Working with the repo
 
