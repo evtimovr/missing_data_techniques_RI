@@ -1,3 +1,4 @@
+# Function for data generation
 generate <- function(mu_g, mu_b, sigma_g, sigma_b, b, n) {
   
   # Function to draw weighted sum of samples from two Gaussian distributions
@@ -46,6 +47,7 @@ generate <- function(mu_g, mu_b, sigma_g, sigma_b, b, n) {
   return(data)
 }
 
+#Function using MiceMNAR package by Galimard et. al
 galimard_option_2 <- function (data, varMNAR, m, test_data){
   
   require(miceMNAR)
@@ -95,7 +97,7 @@ galimard_option_2 <- function (data, varMNAR, m, test_data){
   #auc_value <- auc(roc_curve)
   auc_value = auc(test_data[, c("Y")], pred$fit)
   # Print AUC
-  #print(paste("AUC_ROC from Gal:", auc_value))
+  print(paste("AUC_ROC from Gal:", auc_value))
   #print(paste("AUC_PR from Gal:", auc_pr))
   
   return ((auc_value) 
@@ -105,8 +107,7 @@ galimard_option_2 <- function (data, varMNAR, m, test_data){
   
 }
 
-# PPMI - adjusting to match the structure of the Lessmann acceptance loop
-
+# PPMM - adjusting to match the structure of the Acceptance loop
 PPMA_MI_sim <- function(data, varMNAR, m, test_data, phi) {
   
   source("./src/binaryPPMA_functions.R")
@@ -177,25 +178,11 @@ PPMA_MI_sim <- function(data, varMNAR, m, test_data, phi) {
     )
 }
 
+#Used for Augmentation
 augment <- function(xf, xnf, yf, test_data){
   model <- augmentation(xf, xnf, yf)
   pred_aug <- predict(model,newdata= test_data[, -ncol(test_data)], type = "response")
   return (auc(test_data$Y,pred_aug))
-}
-
-# Function to create missing values
-missingness_mnar <- function(data, missing_percentage_0, missing_percentage_1) {
-  data$Y_hat <- data$Y
-  
-  sampled_indices_0 <- sample(which(data$Y == 0), size = floor(length(which(data$Y == 0)) * missing_percentage_0))
-  data$Y_hat[sampled_indices_0] <- NA
-  
-  sampled_indices_1 <- sample(which(data$Y == 1), size = floor(length(which(data$Y == 1)) * missing_percentage_1))
-  data$Y_hat[sampled_indices_1] <- NA
-  
-  data$r <- ifelse(is.na(data$Y_hat), 1, 0)
-  
-  return(data)
 }
 
 # Data Generation from a single Gaussian distribution
@@ -221,7 +208,7 @@ generate_single <- function(mu_g, mu_b, sigma_g, sigma_b, b, n) {
   return(data)
 }
 
-
+# Function for the acceptance loop
 simulation_gal <- function(mu_g, mu_b, sigma_g, sigma_b, n_train, n_test, b, alpha, j_max, i) {
   # Generate initial dataset D_star
   
@@ -316,5 +303,65 @@ simulation_gal <- function(mu_g, mu_b, sigma_g, sigma_b, n_train, n_test, b, alp
   # return(list(D_a = D_a, D_r = D_r))
   return(sim_df)
 } 
+
+
+# Functions used in the simulation study, the results from which were not explained in detail in the thesis
+
+#CCA
+complete_case_func <- function(data, varMNAR, test_data){
+  train_data_cca <- data[complete.cases(data),]
+  #print("CCA")
+  #print (len(train_data_cca))
+  formula <- as.formula(paste(varMNAR, "~ V1+V2+V3+V4+V5"))
+  fit_cca <- glm(formula, family=binomial, data = train_data_cca)
+  pred = predict(fit_cca, newdata = test_data[,c("V1", "V2","V3", "V4", "V5")], type = "response")
+  require(PRROC)
+  require(Metrics)
+
+
+  # Calculate AUC-ROC
+  auc_value = auc(test_data[, c("Y")],pred)
+  # Print AUC
+  print(paste("AUC_ROC from CCA:", auc_value))
+  
+  return (auc_value)
+  
+}
+
+#Orcale model
+oracle_model_func <- function(data, varMNAR, test_data){
+  train_data_oracle<- data
+  #print("CCA")
+  #print (len(train_data_cca))
+  formula <- as.formula(paste(varMNAR, "~ V1+V2+V3+V4+V5"))
+  fit_oracle <- glm(formula, family=binomial, data = train_data_oracle)
+  pred = predict(fit_oracle, newdata = test_data[,c("V1", "V2","V3","V4","V5")], type = "response")
+  require(PRROC)
+  require(Metrics)
+  # Compute ROC curve
+  #roc_curve <- roc(response = test_data[, c("Y")], predictor = pred)
+  
+  # Calculate AUC
+  #auc_value <- auc(roc_curve)
+  auc_value = auc(test_data[, c("Y")],pred)
+  # Print AUC
+  print(paste("AUC_ROC from Oracle:", auc_value))
+  
+  return (auc_value)
+  
+}
+
+# Function to create missing values
+missingness_mnar <- function(data, missing_percentage_0, missing_percentage_1) {
+  #data$Y_real <- data$Y
+  
+  sampled_indices_0 <- sample(which(data$Y == 0), size = floor(length(which(data$Y == 0)) * missing_percentage_0))
+  data$Y[sampled_indices_0] <- NA
+  
+  sampled_indices_1 <- sample(which(data$Y == 1), size = floor(length(which(data$Y == 1)) * missing_percentage_1))
+  data$Y[sampled_indices_1] <- NA
+  
+  return(data)
+}
 
 

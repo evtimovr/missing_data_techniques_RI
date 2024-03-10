@@ -52,6 +52,7 @@ galimard_option_2 <- function (data, varMNAR, m, test_data){
   # Calculate AUC
   #auc_value <- auc(roc_curve)
   auc_value = auc(test_data[, c("Y")], pred$fit)
+  print(paste("AUC_ROC from Gal:", auc_value))
   
   return ((auc_value))
   
@@ -177,20 +178,6 @@ generate <- function(mu_g, mu_b, sigma_g, sigma_b, b, n) {
   return(data)
 }
 
-# Function to create missing values
-missingness_mnar <- function(data, missing_percentage_0, missing_percentage_1) {
-  data$Y_hat <- data$Y
-  
-  sampled_indices_0 <- sample(which(data$Y == 0), size = floor(length(which(data$Y == 0)) * missing_percentage_0))
-  data$Y_hat[sampled_indices_0] <- NA
-  
-  sampled_indices_1 <- sample(which(data$Y == 1), size = floor(length(which(data$Y == 1)) * missing_percentage_1))
-  data$Y_hat[sampled_indices_1] <- NA
-  
-  data$r <- ifelse(is.na(data$Y_hat), 1, 0)
-  
-  return(data)
-}
 
 # Data Generation from a single Gaussian distribution
 generate_single <- function(mu_g, mu_b, sigma_g, sigma_b, b, n) {
@@ -303,5 +290,65 @@ augment <- function(xf, xnf, yf, test_data){
   model <- augmentation(xf, xnf, yf)
   pred_aug <- predict(model,newdata= test_data[, -ncol(test_data)], type = "response")
   return (auc(test_data$Y,pred_aug))
+}
+
+
+# Functions used in the simulation study, the results from which were not explained in detail in the thesis
+
+#CCA
+complete_case_func <- function(data, varMNAR, test_data){
+  train_data_cca <- data[complete.cases(data),]
+  #print("CCA")
+  #print (len(train_data_cca))
+  formula <- as.formula(paste(varMNAR, "~ V1+V2+V4+V5"))
+  fit_cca <- glm(formula, family=binomial, data = train_data_cca)
+  pred = predict(fit_cca, newdata = test_data[,c("V1", "V2", "V4", "V5")], type = "response")
+  require(PRROC)
+  require(Metrics)
+  
+  
+  # Calculate AUC-ROC
+  auc_value = auc(test_data[, c("Y")],pred)
+  # Print AUC
+  print(paste("AUC_ROC from CCA:", auc_value))
+  
+  return (auc_value)
+  
+}
+
+#Orcale model
+oracle_model_func <- function(data, varMNAR, test_data){
+  train_data_oracle<- data
+  #print("CCA")
+  #print (len(train_data_cca))
+  formula <- as.formula(paste(varMNAR, "~ V1+V2+V4+V5"))
+  fit_oracle <- glm(formula, family=binomial, data = train_data_oracle)
+  pred = predict(fit_oracle, newdata = test_data[,c("V1", "V2","V4","V5")], type = "response")
+  require(PRROC)
+  require(Metrics)
+  # Compute ROC curve
+  #roc_curve <- roc(response = test_data[, c("Y")], predictor = pred)
+  
+  # Calculate AUC
+  #auc_value <- auc(roc_curve)
+  auc_value = auc(test_data[, c("Y")],pred)
+  # Print AUC
+  print(paste("AUC_ROC from Oracle:", auc_value))
+  
+  return (auc_value)
+  
+}
+
+# Function to create missing values
+missingness_mnar <- function(data, missing_percentage_0, missing_percentage_1) {
+  #data$Y_real <- data$Y
+  
+  sampled_indices_0 <- sample(which(data$Y == 0), size = floor(length(which(data$Y == 0)) * missing_percentage_0))
+  data$Y[sampled_indices_0] <- NA
+  
+  sampled_indices_1 <- sample(which(data$Y == 1), size = floor(length(which(data$Y == 1)) * missing_percentage_1))
+  data$Y[sampled_indices_1] <- NA
+  
+  return(data)
 }
 
