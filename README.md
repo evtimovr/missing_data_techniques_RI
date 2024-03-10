@@ -60,7 +60,7 @@ All files with results from the different combinations will be automatically sto
 
 ## Results
 
-The plot folder contains the plots shown in the paper. 
+The "plot" folder contains the plots shown in the paper. 
 The actual results can be recreated by following the .R files in the "src" folder. 
 
 ## Project structure
