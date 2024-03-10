@@ -33,8 +33,7 @@ Idea behind the main output of the thesis:
 ### Dependencies
 
 For the results on the Master Thesis R 4.1.2 was used.
-
-Does a repository have information on dependencies or instructions on how to set up the environment?
+There is dependence on the "miceMNAR" package that is currently not available on CRAN. It has to be manually downloaded and installed from https://cran.r-project.org/src/contrib/Archive/miceMNAR/. 
 
 ### Setup
 
@@ -61,20 +60,29 @@ All files with results from the different combinations will be automatically sto
 
 ## Results
 
-Does a repository contain a table/plot of main results and a script to reproduce those results?
+The plot folder contains the plots shown in the paper. 
+The actual results can be recreated by following the .R files in the "src" folder. 
 
 ## Project structure
 
-(Here is an example from SMART_HOME_N_ENERGY, [Appliance Level Load Prediction](https://github.com/Humboldt-WI/dissertations/tree/main/SMART_HOME_N_ENERGY/Appliance%20Level%20Load%20Prediction) dissertation)
 
 ```bash
 ├── README.md
-├── params                                          -- stores output csv file  
-├── plots                                           -- stores image files
+├── paper
+    ├── master_thesis_Evtimov_Radoslav.pdf          -- master Thesis in pdf format
+    ├── master_thesis_Evtimov_Radoslav.tex          -- master Thesis in Latex format
+    ├── references_master_thesis.bib                -- references in bibtex format
+├── params                                          -- stores parameters  
+├── plots                                           -- stores image file
 └── src
-    ├── prepare_source_data.ipynb                   -- preprocesses data
-    ├── data_preparation.ipynb                      -- preparing datasets
-    ├── model_tuning.ipynb                          -- tuning functions
-    └── run_experiment.ipynb                        -- run experiments 
-    └── plots                                       -- plotting functions                 
+    ├── acceptance_loop_2.R                         -- code for acceptance loop for combination 2
+    ├── acceptance_loop_3.R                         -- code for acceptance loop for combination 3
+    ├── acceptance_loop_4.R                         -- code for acceptance loop for combination 4
+    ├── acceptance_loop_adjustables_4_vars.R        -- code for acceptance loop with adjustable combinations for 4 features
+    ├── acceptance_loop_adjustables_5_vars.R        -- code for acceptance loop with adjustable combinations for 5 features
+    ├── mnar_simulation_study.R                     -- code for MNAR simulation study
+    ├── al_4_var_functions.R                        -- functions for the acceptance loop
+    ├── al_5_var_functions.R                        -- functions for the acceptance loop
+    ├── binaryPPMA_functions.R                      -- functions for the PPMM
+    └── visualisations_master_thesis.R              -- visualisation script used                 
 ```
