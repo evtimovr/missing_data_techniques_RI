@@ -38,8 +38,6 @@ Does a repository have information on dependencies or instructions on how to set
 
 ### Setup
 
-[This is an example]
-
 1. Clone this repository
 
 2. Set up your working directory in R to be the one with all files of this repo
