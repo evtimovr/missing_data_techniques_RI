@@ -8,7 +8,7 @@
 
 **2nd Examiner:** Prof. Dr. Benjamin Fabian 
 
-[Insert here a figure explaining your approach or main results]
+Idea behind the main output of the thesis:
 
 ![results](/Process_flow.jpg)
 
